@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '../lib/supabase';
 
 const SECTIONS = ['home', 'story', 'events', 'gallery', 'wishes', 'rsvp', 'gift'];
 
-export default function Page() {
+function PageContent() {
   const searchParams = useSearchParams();
   const guestParam = searchParams.get('to');
   const guestName = guestParam || 'Bapak/Ibu/Saudara/i Tamu Istimewa';
@@ -760,5 +760,13 @@ export default function Page() {
         {isPlaying ? '🔊' : '🔇'}
       </button>
     </>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>}>
+      <PageContent />
+    </Suspense>
   );
 }
